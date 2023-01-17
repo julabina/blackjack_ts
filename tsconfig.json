@@ -1,0 +1,14 @@
+{
+
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "ESNext",
+        "noEmitOnError": true, 
+        "strict": true,
+        "moduleResolution": "node"
+    },
+    "files": [
+        "src/app.ts"
+    ]
+
+}

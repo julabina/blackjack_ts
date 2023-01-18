@@ -9,17 +9,52 @@
 <body>
     <main>
         <section>
+            <form>
+                <div>
+                    <div>
+                        <label>US</label>
+                        <input type="radio" name="rule" id="usRule" value="us" select>
+                    </div>
+                    <div>
+                        <label>FR</label>
+                        <input type="radio" name="rule" id="frRule" value="fr">
+                    </div>
+                </div>
+                <select name="" id="selectPlayers">
+                    <option value="1" select>1 joueur</option>
+                    <option value="2">2 joueurs</option>
+                    <option value="3">3 joueurs</option>
+                    <option value="4">4 joueurs</option>
+                    <option value="5">5 joueurs</option>
+                    <option value="6">6 joueurs</option>
+                    <option value="7">7 joueurs</option>
+                </select>
+                <select name="" id="selectCards">
+                    <option value="1" select>1 jeu</option>
+                    <option value="2">2 jeux</option>
+                    <option value="3">3 jeux</option>
+                    <option value="4">4 jeux</option>
+                    <option value="5">5 jeux</option>
+                    <option value="6">6 jeux</option>
+                    <option value="7">7 jeux</option>
+                    <option value="8">8 jeux</option>
+                </select>
+                <select name="" id="">
+                    <option value="1" select>2€ - 100€</option>
+                    <option value="2">25€ - 500€</option>
+                    <option value="3">50€ - 1000€</option>
+                    <option value="4">100€ - 2000€</option>
+                </select>
+                <button id="startGame">Débuter</button>
+            </form>
+        </section>
+        <section>
             <div class="bj__cpu__card"><p></p></div>
             <p class="bj__cpu__point"></p>
         </section>
         <section>
             <div class="bj__players">
-                <div class="bj__players__1">
-                    <div class="bj__players__1__card">
-                    <p></p>
-                    </div>
-                    <p class="bj__players__1__point"></p>
-                </div>
+                
             </div>
         </section>
         <button id="playBtn">Jouer</button>

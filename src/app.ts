@@ -1,19 +1,28 @@
 type Card = {name: string, value: number, family?: string};
+type Player = {name: string, total: number, money: number};
 
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
 const player1Card = document.querySelector('.bj__players__1__card');
 const player1Point = document.querySelector('.bj__players__1__point');
-const testBtn = document.getElementById('playBtn');
-const p1HitBtn = document.getElementById('p1Hit');
-const p1StandBtn = document.getElementById('p1Stand');
+const playBtn = document.getElementById('playBtn');
 const bankP = bankCard?.querySelector('p');
-const player1P = player1Card?.querySelector('p');
-let player1Total: number = 0;
+const startGameBtn = document.getElementById('startGame');
+const paramsCards = document.getElementById('selectCards') as HTMLSelectElement;
+const paramsPlayers = document.getElementById('selectPlayers') as HTMLSelectElement;
+const playersContainer = document.querySelector('.bj__players');
+let players: Player[] = [];
 let bankTotal: number = 0;
+let deckCount: number = 0;
+let rulesFromFr: boolean = false;
 
+/**
+ * create one family deck
+ * 
+ * @param fam 
+ * @returns Card[]
+ */
 const createDeck = (fam: string): Card[] => {
-    
     let deck: Card[] = [
         {name: "As", value: 1 | 11, family: fam}, 
         {name: "2", value: 2, family: fam}, 
@@ -33,8 +42,27 @@ const createDeck = (fam: string): Card[] => {
     return deck;
 };
 
-const shuffleDeck = (deck: Card[]): Card[] => {
-    const cardsCount: number = deck.length;
+/**
+ * shuffle all decks
+ * 
+ * @returns Cards[]
+ */
+const shuffleDeck = (): Card[] => {
+    const cardsCount: number = 52 * deckCount;
+    let deck: Card[] = []  
+
+    if (cardsCount === 52) {
+        deck = fullDeck;
+    } else {
+        for (let j = 0; j < deckCount; j++) {
+            if (j === 0) {
+                deck = fullDeck;
+            } else {
+                deck = deck.concat(fullDeck);
+            }
+        }
+    }   
+
     let indexTrash: number[] = [];
     let shuffleDeck: Card[] = [];    
     
@@ -42,7 +70,7 @@ const shuffleDeck = (deck: Card[]): Card[] => {
         let okToContinue: boolean = false;
         
         while (okToContinue !== true) {
-            const randomInd: number = Math.floor(Math.random() * (52 - 1 + 1) + 1);          
+            const randomInd: number = Math.floor(Math.random() * (cardsCount - 1 + 1) + 1);          
             
             if (!indexTrash.includes(randomInd - 1)) {                
                 shuffleDeck.push(deck[randomInd - 1]);
@@ -60,9 +88,51 @@ let heart: Card[] = createDeck("coeur");
 let diamond: Card[] = createDeck("carreau");
 let spade: Card[] = createDeck("pique");
 
-let fullDeck: Card[] = shuffleDeck(club.concat(heart, diamond, spade)); 
+let fullDeck: Card[] = club.concat(heart, diamond, spade); 
 let deckCardCount: number = 0;
 
+/**
+ * load all game params
+ * 
+ * @param e 
+ */
+const loadGameParams = (e: Event) => {
+    e.preventDefault();
+    const frRule = document.getElementById("frRule") as HTMLInputElement;
+    const usRule = document.getElementById("usRule") as HTMLInputElement;
+    players = [];
+
+    console.log(frRule, usRule);
+    
+
+    if (paramsPlayers && paramsCards && frRule && usRule) {
+        const p: number = parseInt(paramsPlayers.value);
+        deckCount = parseInt(paramsCards.value);
+
+        if (frRule.checked) {
+            rulesFromFr = true;
+        } else if (usRule.checked) {
+            rulesFromFr = false;
+        }
+        
+        for (let i: number = 0; i < p; i++) {
+            const ply: Player = {name: "player " + (i + 1).toString(), total: 0, money: 15000};
+
+            players.push(ply);
+            
+        }
+        
+        shuffleDeck();
+    }
+
+};
+
+/**
+ * distribute cards for all player
+ * 
+ * @param e 
+*/
+/* 
 const distribution = (e: Event) => {
     console.log("------------------");
     
@@ -88,7 +158,7 @@ const distribution = (e: Event) => {
             console.log("BLACK JACK");
         }
     }
-}
+};
 
 const hit = () => {
     if (player1P && player1Point) {
@@ -103,7 +173,7 @@ const hit = () => {
             console.log("LOSE");
         }
     }
-}
+};
 
 const stand = () => {
     if (bankP && bankPoint) {
@@ -123,11 +193,10 @@ const stand = () => {
             
         }
     }
-}
+}; */
 
-testBtn?.addEventListener('click', distribution);
-p1HitBtn?.addEventListener('click', hit);
-p1StandBtn?.addEventListener('click', stand);
+startGameBtn?.addEventListener('click', loadGameParams);
+//playBtn?.addEventListener('click', distribution);
 
 
 

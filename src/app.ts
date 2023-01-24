@@ -1,5 +1,5 @@
 type Card = {name: string, value: number, family?: string};
-type Player = {name: string, total: number, money: number};
+type Player = {name: string, total: number, money: number, status?: string};
 
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
@@ -15,6 +15,8 @@ let players: Player[] = [];
 let bankTotal: number = 0;
 let deckCount: number = 0;
 let rulesFromFr: boolean = false;
+let bankSecondCard: Card;
+let finalDeck: Card[] = [];
 
 /**
  * create one family deck
@@ -91,6 +93,14 @@ let spade: Card[] = createDeck("pique");
 let fullDeck: Card[] = club.concat(heart, diamond, spade); 
 let deckCardCount: number = 0;
 
+const hitFunc = (a: number) => {
+    console.log(players[a].total);
+}
+
+const standFunc = (a: number) => {
+    console.log(players[a].total);
+}
+
 /**
  * load all game params
  * 
@@ -100,10 +110,11 @@ const loadGameParams = (e: Event) => {
     e.preventDefault();
     const frRule = document.getElementById("frRule") as HTMLInputElement;
     const usRule = document.getElementById("usRule") as HTMLInputElement;
-    players = [];
+    players = [];  
 
-    console.log(frRule, usRule);
-    
+    if (playersContainer) {   
+        playersContainer.innerHTML = "";  
+    }
 
     if (paramsPlayers && paramsCards && frRule && usRule) {
         const p: number = parseInt(paramsPlayers.value);
@@ -116,13 +127,42 @@ const loadGameParams = (e: Event) => {
         }
         
         for (let i: number = 0; i < p; i++) {
-            const ply: Player = {name: "player " + (i + 1).toString(), total: 0, money: 15000};
+            const ply: Player = {name: "player " + (i + 1).toString(), total: 0, money: 15000, status: "pending"};
 
             players.push(ply);
+
+            const playerDiv = document.createElement("div");
+            const playerName = document.createElement('h2');
+            playerName.textContent = ply.name;
+            playerDiv.appendChild(playerName);
+            const playerCardDiv = document.createElement('div');
+            const playerCards = document.createElement('p');
+            playerCardDiv.appendChild(playerCards);
+            playerCards.className = "playersCards";
+            const playerTotal = document.createElement('p');
+            playerTotal.className = "playersTotal";
+            playerDiv.appendChild(playerCardDiv);
+            playerDiv.appendChild(playerTotal);
+            const playerHitBtn = document.createElement("button");
+            playerHitBtn.addEventListener('click', function() {
+                hitFunc(i);
+            });
+            const playerStandBtn = document.createElement("button");
+            playerStandBtn.addEventListener('click', function() {
+                standFunc(i);
+            });
+            playerHitBtn.textContent = "Carte";
+            playerStandBtn.textContent = "Stop";
+            const playerDivBtn = document.createElement('div');
+            playerDivBtn.appendChild(playerHitBtn);
+            playerDivBtn.appendChild(playerStandBtn);
+            playerDiv.appendChild(playerDivBtn);
+
+            playersContainer?.appendChild(playerDiv);
             
         }
         
-        shuffleDeck();
+        finalDeck = shuffleDeck();
     }
 
 };
@@ -132,38 +172,57 @@ const loadGameParams = (e: Event) => {
  * 
  * @param e 
 */
-/* 
 const distribution = (e: Event) => {
-    console.log("------------------");
+
+    const playersCards = document.querySelectorAll('.playersCards');
+    const playersTotal = document.querySelectorAll('.playersTotal');
     
-    player1Total = 0;
     bankTotal = 0;
 
-    if (bankP && bankPoint && player1P && player1Point) {
-        bankP.textContent = fullDeck[deckCardCount].name;
-        bankTotal = fullDeck[deckCardCount].value;
+    for (let i = 0; i < players.length; i++) {
+        
+    }
+
+    if (bankP && bankPoint) {
+        bankP.textContent = finalDeck[deckCardCount].name;
+        bankTotal = finalDeck[deckCardCount].value;
         bankPoint.textContent = (bankTotal).toString(); 
         deckCardCount++;
-        
-        player1P.textContent = fullDeck[deckCardCount].name;
-        player1Total = fullDeck[deckCardCount].value; 
-        deckCardCount++;
-
-        player1P.textContent += fullDeck[deckCardCount].name;
-        player1Total += fullDeck[deckCardCount].value;
-        player1Point.textContent = (player1Total).toString(); 
-        deckCardCount++;
-        
-        if (player1Total === 21) {
-            console.log("BLACK JACK");
+        if (rulesFromFr === false) {
+            bankSecondCard = finalDeck[deckCardCount]
+            deckCardCount++;
         }
     }
+        
+    for (let i = 0; i < players.length; i++) {
+        playersCards[i].textContent = finalDeck[deckCardCount].name;
+        playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
+        players[i].total = finalDeck[deckCardCount].value;
+        deckCardCount++;
+    }
+    
+    for (let i = 0; i < players.length; i++) {
+        playersCards[i].textContent += finalDeck[deckCardCount].name;
+        const t2: number = finalDeck[deckCardCount].value + players[i].total;
+        players[i].total = t2;
+        playersTotal[i].textContent = t2.toString();
+        deckCardCount++;
+    }
+
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].total === 21) {
+            console.log("BLACK JACK", players[i].name)
+        }
+    }
+
+    
 };
 
+/* 
 const hit = () => {
     if (player1P && player1Point) {
-        player1P.textContent += fullDeck[deckCardCount].name;
-        player1Total += fullDeck[deckCardCount].value;
+        player1P.textContent += finalDeck[deckCardCount].name;
+        player1Total += finalDeck[deckCardCount].value;
         player1Point.textContent = (player1Total).toString(); 
         deckCardCount++;
         
@@ -177,8 +236,8 @@ const hit = () => {
 
 const stand = () => {
     if (bankP && bankPoint) {
-        bankP.textContent += fullDeck[deckCardCount].name;
-        bankTotal += fullDeck[deckCardCount].value;
+        bankP.textContent += finalDeck[deckCardCount].name;
+        bankTotal += finalDeck[deckCardCount].value;
         bankPoint.textContent = (bankTotal).toString(); 
         deckCardCount++;
 
@@ -196,9 +255,4 @@ const stand = () => {
 }; */
 
 startGameBtn?.addEventListener('click', loadGameParams);
-//playBtn?.addEventListener('click', distribution);
-
-
-
-
-
+playBtn?.addEventListener('click', distribution);

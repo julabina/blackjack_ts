@@ -13,6 +13,8 @@ let players = [];
 let bankTotal = 0;
 let deckCount = 0;
 let rulesFromFr = false;
+let bankSecondCard;
+let finalDeck = [];
 /**
  * create one family deck
  *
@@ -79,6 +81,12 @@ let diamond = createDeck("carreau");
 let spade = createDeck("pique");
 let fullDeck = club.concat(heart, diamond, spade);
 let deckCardCount = 0;
+const hitFunc = (a) => {
+    console.log(players[a].total);
+};
+const standFunc = (a) => {
+    console.log(players[a].total);
+};
 /**
  * load all game params
  *
@@ -89,7 +97,9 @@ const loadGameParams = (e) => {
     const frRule = document.getElementById("frRule");
     const usRule = document.getElementById("usRule");
     players = [];
-    console.log(frRule, usRule);
+    if (playersContainer) {
+        playersContainer.innerHTML = "";
+    }
     if (paramsPlayers && paramsCards && frRule && usRule) {
         const p = parseInt(paramsPlayers.value);
         deckCount = parseInt(paramsCards.value);
@@ -100,10 +110,37 @@ const loadGameParams = (e) => {
             rulesFromFr = false;
         }
         for (let i = 0; i < p; i++) {
-            const ply = { name: "player " + (i + 1).toString(), total: 0, money: 15000 };
+            const ply = { name: "player " + (i + 1).toString(), total: 0, money: 15000, status: "pending" };
             players.push(ply);
+            const playerDiv = document.createElement("div");
+            const playerName = document.createElement('h2');
+            playerName.textContent = ply.name;
+            playerDiv.appendChild(playerName);
+            const playerCardDiv = document.createElement('div');
+            const playerCards = document.createElement('p');
+            playerCardDiv.appendChild(playerCards);
+            playerCards.className = "playersCards";
+            const playerTotal = document.createElement('p');
+            playerTotal.className = "playersTotal";
+            playerDiv.appendChild(playerCardDiv);
+            playerDiv.appendChild(playerTotal);
+            const playerHitBtn = document.createElement("button");
+            playerHitBtn.addEventListener('click', function () {
+                hitFunc(i);
+            });
+            const playerStandBtn = document.createElement("button");
+            playerStandBtn.addEventListener('click', function () {
+                standFunc(i);
+            });
+            playerHitBtn.textContent = "Carte";
+            playerStandBtn.textContent = "Stop";
+            const playerDivBtn = document.createElement('div');
+            playerDivBtn.appendChild(playerHitBtn);
+            playerDivBtn.appendChild(playerStandBtn);
+            playerDiv.appendChild(playerDivBtn);
+            playersContainer?.appendChild(playerDiv);
         }
-        shuffleDeck();
+        finalDeck = shuffleDeck();
     }
 };
 /**
@@ -111,38 +148,46 @@ const loadGameParams = (e) => {
  *
  * @param e
 */
-/*
-const distribution = (e: Event) => {
-    console.log("------------------");
-    
-    player1Total = 0;
+const distribution = (e) => {
+    const playersCards = document.querySelectorAll('.playersCards');
+    const playersTotal = document.querySelectorAll('.playersTotal');
     bankTotal = 0;
-
-    if (bankP && bankPoint && player1P && player1Point) {
-        bankP.textContent = fullDeck[deckCardCount].name;
-        bankTotal = fullDeck[deckCardCount].value;
+    for (let i = 0; i < players.length; i++) {
+    }
+    if (bankP && bankPoint) {
+        bankP.textContent = finalDeck[deckCardCount].name;
+        bankTotal = finalDeck[deckCardCount].value;
         bankPoint.textContent = (bankTotal).toString();
         deckCardCount++;
-        
-        player1P.textContent = fullDeck[deckCardCount].name;
-        player1Total = fullDeck[deckCardCount].value;
+        if (rulesFromFr === false) {
+            bankSecondCard = finalDeck[deckCardCount];
+            deckCardCount++;
+        }
+    }
+    for (let i = 0; i < players.length; i++) {
+        playersCards[i].textContent = finalDeck[deckCardCount].name;
+        playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
+        players[i].total = finalDeck[deckCardCount].value;
         deckCardCount++;
-
-        player1P.textContent += fullDeck[deckCardCount].name;
-        player1Total += fullDeck[deckCardCount].value;
-        player1Point.textContent = (player1Total).toString();
+    }
+    for (let i = 0; i < players.length; i++) {
+        playersCards[i].textContent += finalDeck[deckCardCount].name;
+        const t2 = finalDeck[deckCardCount].value + players[i].total;
+        players[i].total = t2;
+        playersTotal[i].textContent = t2.toString();
         deckCardCount++;
-        
-        if (player1Total === 21) {
-            console.log("BLACK JACK");
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].total === 21) {
+            console.log("BLACK JACK", players[i].name);
         }
     }
 };
-
+/*
 const hit = () => {
     if (player1P && player1Point) {
-        player1P.textContent += fullDeck[deckCardCount].name;
-        player1Total += fullDeck[deckCardCount].value;
+        player1P.textContent += finalDeck[deckCardCount].name;
+        player1Total += finalDeck[deckCardCount].value;
         player1Point.textContent = (player1Total).toString();
         deckCardCount++;
         
@@ -156,8 +201,8 @@ const hit = () => {
 
 const stand = () => {
     if (bankP && bankPoint) {
-        bankP.textContent += fullDeck[deckCardCount].name;
-        bankTotal += fullDeck[deckCardCount].value;
+        bankP.textContent += finalDeck[deckCardCount].name;
+        bankTotal += finalDeck[deckCardCount].value;
         bankPoint.textContent = (bankTotal).toString();
         deckCardCount++;
 
@@ -174,4 +219,4 @@ const stand = () => {
     }
 }; */
 startGameBtn?.addEventListener('click', loadGameParams);
-//playBtn?.addEventListener('click', distribution);
+playBtn?.addEventListener('click', distribution);

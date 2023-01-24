@@ -1,8 +1,6 @@
 "use strict";
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
-const player1Card = document.querySelector('.bj__players__1__card');
-const player1Point = document.querySelector('.bj__players__1__point');
 const playBtn = document.getElementById('playBtn');
 const bankP = bankCard?.querySelector('p');
 const startGameBtn = document.getElementById('startGame');
@@ -82,10 +80,97 @@ let spade = createDeck("pique");
 let fullDeck = club.concat(heart, diamond, spade);
 let deckCardCount = 0;
 const hitFunc = (a) => {
-    console.log(players[a].total);
+    const playersCards = document.querySelectorAll('.playersCards');
+    const playersTotal = document.querySelectorAll('.playersTotal');
+    const playersBtns = document.querySelectorAll('.playerDivBtn');
+    const cardText = playersCards[a].textContent + finalDeck[deckCardCount].name;
+    const cardsTotal = players[a].total + finalDeck[deckCardCount].value;
+    if (deckCardCount + 1 >= finalDeck.length) {
+        finalDeck = shuffleDeck();
+        deckCardCount = 0;
+    }
+    players[a].total = cardsTotal;
+    playersCards[a].textContent = cardText;
+    playersTotal[a].textContent = cardsTotal.toString();
+    deckCardCount++;
+    if (cardsTotal > 21) {
+        playersBtns[a].classList.add("playerDivBtn--hidden");
+        players[a].status = "lose";
+        if ((a + 1) < players.length) {
+            playersBtns[a + 1].classList.remove("playerDivBtn--hidden");
+        }
+        else {
+            cpuTurn();
+        }
+    }
+    else if (cardsTotal === 21) {
+        playersBtns[a].classList.add("playerDivBtn--hidden");
+        players[a].status = "black jack";
+        if ((a + 1) < players.length) {
+            playersBtns[a + 1].classList.remove("playerDivBtn--hidden");
+        }
+        else {
+            cpuTurn();
+        }
+    }
 };
 const standFunc = (a) => {
-    console.log(players[a].total);
+    const playersBtns = document.querySelectorAll('.playerDivBtn');
+    playersBtns[a].classList.add("playerDivBtn--hidden");
+    players[a].status = "stand";
+    if ((a + 1) < players.length) {
+        playersBtns[a + 1].classList.remove("playerDivBtn--hidden");
+    }
+    else {
+        cpuTurn();
+    }
+};
+const cpuTurn = () => {
+    if (bankP && bankPoint) {
+        if (rulesFromFr === true) {
+            bankSecondCard = finalDeck[deckCardCount];
+            deckCardCount++;
+        }
+        bankP.textContent += bankSecondCard.name;
+        const total = bankTotal + bankSecondCard.value;
+        bankPoint.textContent = total.toString();
+    }
+    // insert logic
+    verifyGame();
+};
+const verifyGame = () => {
+    const playersStatus = document.querySelectorAll('.playerStatus');
+    if (bankTotal <= 21) {
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].total <= 21) {
+                if (bankTotal > players[i].total) {
+                    playersStatus[i].textContent = "Perdu";
+                }
+                else if (bankTotal < players[i].total) {
+                    playersStatus[i].textContent = "Gagné";
+                }
+                else if (bankTotal === players[i].total) {
+                    playersStatus[i].textContent = "Draw";
+                }
+            }
+            else {
+                playersStatus[i].textContent = "Perdu";
+            }
+        }
+    }
+    else {
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].status === "BJ") {
+                playersStatus[i].textContent = "Black Jack";
+            }
+            else if (players[i].status === "lose") {
+                playersStatus[i].textContent = "Perdu";
+            }
+            else {
+                playersStatus[i].textContent = "Gagné";
+            }
+        }
+    }
 };
 /**
  * load all game params
@@ -116,6 +201,9 @@ const loadGameParams = (e) => {
             const playerName = document.createElement('h2');
             playerName.textContent = ply.name;
             playerDiv.appendChild(playerName);
+            const playerStatus = document.createElement('h3');
+            playerStatus.className = "playerStatus";
+            playerDiv.appendChild(playerStatus);
             const playerCardDiv = document.createElement('div');
             const playerCards = document.createElement('p');
             playerCardDiv.appendChild(playerCards);
@@ -135,6 +223,7 @@ const loadGameParams = (e) => {
             playerHitBtn.textContent = "Carte";
             playerStandBtn.textContent = "Stop";
             const playerDivBtn = document.createElement('div');
+            playerDivBtn.className = "playerDivBtn playerDivBtn--hidden";
             playerDivBtn.appendChild(playerHitBtn);
             playerDivBtn.appendChild(playerStandBtn);
             playerDiv.appendChild(playerDivBtn);
@@ -149,10 +238,13 @@ const loadGameParams = (e) => {
  * @param e
 */
 const distribution = (e) => {
+    initStat();
     const playersCards = document.querySelectorAll('.playersCards');
     const playersTotal = document.querySelectorAll('.playersTotal');
     bankTotal = 0;
-    for (let i = 0; i < players.length; i++) {
+    if (deckCardCount + 1 >= finalDeck.length) {
+        finalDeck = shuffleDeck();
+        deckCardCount = 0;
     }
     if (bankP && bankPoint) {
         bankP.textContent = finalDeck[deckCardCount].name;
@@ -165,12 +257,20 @@ const distribution = (e) => {
         }
     }
     for (let i = 0; i < players.length; i++) {
+        if (deckCardCount + 1 >= finalDeck.length) {
+            finalDeck = shuffleDeck();
+            deckCardCount = 0;
+        }
         playersCards[i].textContent = finalDeck[deckCardCount].name;
         playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
         players[i].total = finalDeck[deckCardCount].value;
         deckCardCount++;
     }
     for (let i = 0; i < players.length; i++) {
+        if (deckCardCount + 1 >= finalDeck.length) {
+            finalDeck = shuffleDeck();
+            deckCardCount = 0;
+        }
         playersCards[i].textContent += finalDeck[deckCardCount].name;
         const t2 = finalDeck[deckCardCount].value + players[i].total;
         players[i].total = t2;
@@ -179,44 +279,32 @@ const distribution = (e) => {
     }
     for (let i = 0; i < players.length; i++) {
         if (players[i].total === 21) {
-            console.log("BLACK JACK", players[i].name);
+            players[i].status = "BJ";
+        }
+    }
+    startGame();
+};
+const startGame = () => {
+    const playersBtns = document.querySelectorAll('.playerDivBtn');
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].status !== "win") {
+            playersBtns[i].classList.remove("playerDivBtn--hidden");
+            break;
         }
     }
 };
-/*
-const hit = () => {
-    if (player1P && player1Point) {
-        player1P.textContent += finalDeck[deckCardCount].name;
-        player1Total += finalDeck[deckCardCount].value;
-        player1Point.textContent = (player1Total).toString();
-        deckCardCount++;
-        
-        if (player1Total === 21) {
-            console.log("BLACK JACK");
-        } else if (player1Total > 21) {
-            console.log("LOSE");
+const initStat = () => {
+    const playersStatus = document.querySelectorAll('.playerStatus');
+    for (let i = 0; i < players.length; i++) {
+        if (bankP && bankPoint) {
+            bankP.textContent = "";
+            bankPoint.textContent = "";
+            bankTotal = 0;
         }
+        playersStatus[i].textContent = "";
+        players[i].total = 0;
+        players[i].status = "pending";
     }
 };
-
-const stand = () => {
-    if (bankP && bankPoint) {
-        bankP.textContent += finalDeck[deckCardCount].name;
-        bankTotal += finalDeck[deckCardCount].value;
-        bankPoint.textContent = (bankTotal).toString();
-        deckCardCount++;
-
-        //insert IA
-
-        if (bankTotal === player1Total) {
-            console.log("draw");
-        } else if (bankTotal > player1Total) {
-            console.log("LOSE");
-        } else if (bankTotal < player1Total) {
-            console.log("WIN");
-            
-        }
-    }
-}; */
 startGameBtn?.addEventListener('click', loadGameParams);
 playBtn?.addEventListener('click', distribution);

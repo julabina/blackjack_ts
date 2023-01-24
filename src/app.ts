@@ -154,6 +154,7 @@ const cpuTurn = () => {
         }
         bankP.textContent += bankSecondCard.name;
         const total = bankTotal + bankSecondCard.value;
+        bankTotal = total;
         bankPoint.textContent = total.toString();
     }
 
@@ -163,7 +164,7 @@ const cpuTurn = () => {
 };
 
 const verifyGame = () => {
-    const playersStatus = document.querySelectorAll('.playerStatus');
+    const playersStatus = document.querySelectorAll('.playerStatus');    
 
     if (bankTotal <= 21) {        
         for (let i = 0; i < players.length; i++) {

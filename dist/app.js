@@ -133,6 +133,7 @@ const cpuTurn = () => {
         }
         bankP.textContent += bankSecondCard.name;
         const total = bankTotal + bankSecondCard.value;
+        bankTotal = total;
         bankPoint.textContent = total.toString();
     }
     // insert logic

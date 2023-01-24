@@ -3,7 +3,7 @@ type Player = {name: string, total: number, money: number, status: string};
 
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
-const playBtn = document.getElementById('playBtn');
+const playBtn = document.querySelector('.playBtn');
 const bankP = bankCard?.querySelector('p');
 const startGameBtn = document.getElementById('startGame');
 const paramsCards = document.getElementById('selectCards') as HTMLSelectElement;
@@ -27,6 +27,8 @@ const loadGameParams = (e: Event) => {
     const usRule = document.getElementById("usRule") as HTMLInputElement;
     players = [];  
 
+    playBtn?.classList.remove("playBtn--hidden");
+
     if (playersContainer) {   
         playersContainer.innerHTML = "";  
     }
@@ -47,6 +49,7 @@ const loadGameParams = (e: Event) => {
             players.push(ply);
 
             const playerDiv = document.createElement("div");
+            playerDiv.className = "bj__players__div"
             const playerName = document.createElement('h2');
             playerName.textContent = ply.name;
             playerDiv.appendChild(playerName);
@@ -245,6 +248,8 @@ const distribution = (e: Event) => {
         }
     }
 
+    playBtn?.classList.add("playBtn--hidden");
+
     startGame();
     
 };
@@ -378,6 +383,8 @@ const verifyGame = () => {
             }
         }
     }
+
+    playBtn?.classList.remove("playBtn--hidden");
 };
 
 const startGame = () => {
@@ -411,7 +418,6 @@ const initStat = () => {
         playersBtns[i].classList.add("playerDivBtn--hidden");
     }
 };
-
 
 startGameBtn?.addEventListener('click', loadGameParams);
 playBtn?.addEventListener('click', distribution);

@@ -1,7 +1,7 @@
 "use strict";
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
-const playBtn = document.getElementById('playBtn');
+const playBtn = document.querySelector('.playBtn');
 const bankP = bankCard?.querySelector('p');
 const startGameBtn = document.getElementById('startGame');
 const paramsCards = document.getElementById('selectCards');
@@ -23,6 +23,7 @@ const loadGameParams = (e) => {
     const frRule = document.getElementById("frRule");
     const usRule = document.getElementById("usRule");
     players = [];
+    playBtn?.classList.remove("playBtn--hidden");
     if (playersContainer) {
         playersContainer.innerHTML = "";
     }
@@ -39,6 +40,7 @@ const loadGameParams = (e) => {
             const ply = { name: "player " + (i + 1).toString(), total: 0, money: 15000, status: "pending" };
             players.push(ply);
             const playerDiv = document.createElement("div");
+            playerDiv.className = "bj__players__div";
             const playerName = document.createElement('h2');
             playerName.textContent = ply.name;
             playerDiv.appendChild(playerName);
@@ -214,6 +216,7 @@ const distribution = (e) => {
             players[i].status = "BJ";
         }
     }
+    playBtn?.classList.add("playBtn--hidden");
     startGame();
 };
 const hitFunc = (a) => {
@@ -335,6 +338,7 @@ const verifyGame = () => {
             }
         }
     }
+    playBtn?.classList.remove("playBtn--hidden");
 };
 const startGame = () => {
     const playersBtns = document.querySelectorAll('.playerDivBtn');

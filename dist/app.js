@@ -14,6 +14,73 @@ let rulesFromFr = false;
 let bankSecondCard;
 let finalDeck = [];
 /**
+ * load all game params
+ *
+ * @param e
+ */
+const loadGameParams = (e) => {
+    e.preventDefault();
+    const frRule = document.getElementById("frRule");
+    const usRule = document.getElementById("usRule");
+    players = [];
+    if (playersContainer) {
+        playersContainer.innerHTML = "";
+    }
+    if (paramsPlayers && paramsCards && frRule && usRule) {
+        const p = parseInt(paramsPlayers.value);
+        deckCount = parseInt(paramsCards.value);
+        if (frRule.checked) {
+            rulesFromFr = true;
+        }
+        else if (usRule.checked) {
+            rulesFromFr = false;
+        }
+        for (let i = 0; i < p; i++) {
+            const ply = { name: "player " + (i + 1).toString(), total: 0, money: 15000, status: "pending" };
+            players.push(ply);
+            const playerDiv = document.createElement("div");
+            const playerName = document.createElement('h2');
+            playerName.textContent = ply.name;
+            playerDiv.appendChild(playerName);
+            const playerStatus = document.createElement('h3');
+            playerStatus.className = "playerStatus";
+            playerDiv.appendChild(playerStatus);
+            const playerCardDiv = document.createElement('div');
+            const playerCards = document.createElement('p');
+            playerCardDiv.appendChild(playerCards);
+            playerCards.className = "playersCards";
+            const playerTotal = document.createElement('p');
+            playerTotal.className = "playersTotal";
+            playerDiv.appendChild(playerCardDiv);
+            playerDiv.appendChild(playerTotal);
+            const playerHitBtn = document.createElement("button");
+            playerHitBtn.addEventListener('click', function () {
+                hitFunc(i);
+            });
+            const playerStandBtn = document.createElement("button");
+            playerStandBtn.addEventListener('click', function () {
+                standFunc(i);
+            });
+            const playerAsBtn = document.createElement("button");
+            playerAsBtn.addEventListener('click', function () {
+                asFunc(i);
+            });
+            playerHitBtn.textContent = "Carte";
+            playerStandBtn.textContent = "Stop";
+            playerAsBtn.textContent = "As = 1";
+            const playerDivBtn = document.createElement('div');
+            playerAsBtn.className = "playerAsBtn playerAsBtn--hidden";
+            playerDivBtn.className = "playerDivBtn playerDivBtn--hidden";
+            playerDivBtn.appendChild(playerHitBtn);
+            playerDivBtn.appendChild(playerStandBtn);
+            playerDivBtn.appendChild(playerAsBtn);
+            playerDiv.appendChild(playerDivBtn);
+            playersContainer?.appendChild(playerDiv);
+        }
+        finalDeck = shuffleDeck();
+    }
+};
+/**
  * create one family deck
  *
  * @param fam
@@ -79,19 +146,100 @@ let diamond = createDeck("carreau");
 let spade = createDeck("pique");
 let fullDeck = club.concat(heart, diamond, spade);
 let deckCardCount = 0;
-const hitFunc = (a) => {
+/**
+ * distribute cards for all player
+ *
+ * @param e
+*/
+const distribution = (e) => {
+    initStat();
     const playersCards = document.querySelectorAll('.playersCards');
     const playersTotal = document.querySelectorAll('.playersTotal');
-    const playersBtns = document.querySelectorAll('.playerDivBtn');
-    const cardText = playersCards[a].textContent + finalDeck[deckCardCount].name;
-    const cardsTotal = players[a].total + finalDeck[deckCardCount].value;
+    const asBtns = document.querySelectorAll('.playerAsBtn');
+    bankTotal = 0;
     if (deckCardCount + 1 >= finalDeck.length) {
         finalDeck = shuffleDeck();
         deckCardCount = 0;
     }
+    if (bankP && bankPoint) {
+        bankP.textContent = finalDeck[deckCardCount].name;
+        bankTotal = finalDeck[deckCardCount].value;
+        bankPoint.textContent = (bankTotal).toString();
+        deckCardCount++;
+        if (rulesFromFr === false) {
+            bankSecondCard = finalDeck[deckCardCount];
+            deckCardCount++;
+        }
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (deckCardCount + 1 >= finalDeck.length) {
+            finalDeck = shuffleDeck();
+            deckCardCount = 0;
+        }
+        playersCards[i].textContent = finalDeck[deckCardCount].name;
+        playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
+        if (finalDeck[deckCardCount].name === "As") {
+            asBtns[i].classList.remove("playerAsBtn--hidden");
+        }
+        players[i].total = finalDeck[deckCardCount].value;
+        deckCardCount++;
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (deckCardCount + 1 >= finalDeck.length) {
+            finalDeck = shuffleDeck();
+            deckCardCount = 0;
+        }
+        playersCards[i].textContent += finalDeck[deckCardCount].name;
+        let t1 = 0;
+        if (finalDeck[deckCardCount].name === "As") {
+            if (players[i].total === 11) {
+                asBtns[i].classList.add("playerAsBtn--hidden");
+                t1 = 1;
+            }
+            else {
+                t1 = finalDeck[deckCardCount].value;
+                asBtns[i].classList.remove("playerAsBtn--hidden");
+            }
+        }
+        else {
+            t1 = finalDeck[deckCardCount].value;
+        }
+        const t2 = t1 + players[i].total;
+        players[i].total = t2;
+        playersTotal[i].textContent = t2.toString();
+        deckCardCount++;
+    }
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].total === 21) {
+            players[i].status = "BJ";
+        }
+    }
+    startGame();
+};
+const hitFunc = (a) => {
+    const playersCards = document.querySelectorAll('.playersCards');
+    const playersTotal = document.querySelectorAll('.playersTotal');
+    const playersBtns = document.querySelectorAll('.playerDivBtn');
+    const asBtns = document.querySelectorAll('.playerAsBtn');
+    const cardText = playersCards[a].textContent + finalDeck[deckCardCount].name;
+    let cardsTotal = players[a].total + finalDeck[deckCardCount].value;
+    asBtns[a].classList.add('playerAsBtn--hidden');
+    if (deckCardCount + 1 >= finalDeck.length) {
+        finalDeck = shuffleDeck();
+        deckCardCount = 0;
+    }
+    console.log(cardsTotal);
+    if (finalDeck[deckCardCount].name === "As") {
+        if (cardsTotal > 21) {
+            cardsTotal = cardsTotal - 10;
+        }
+        else {
+            asBtns[a].classList.remove('playerAsBtn--hidden');
+        }
+    }
     players[a].total = cardsTotal;
-    playersCards[a].textContent = cardText;
     playersTotal[a].textContent = cardsTotal.toString();
+    playersCards[a].textContent = cardText;
     deckCardCount++;
     if (cardsTotal > 21) {
         playersBtns[a].classList.add("playerDivBtn--hidden");
@@ -117,13 +265,28 @@ const hitFunc = (a) => {
 const standFunc = (a) => {
     const playersBtns = document.querySelectorAll('.playerDivBtn');
     playersBtns[a].classList.add("playerDivBtn--hidden");
-    players[a].status = "stand";
+    if (players[a].status !== "BJ") {
+        players[a].status = "stand";
+    }
     if ((a + 1) < players.length) {
-        playersBtns[a + 1].classList.remove("playerDivBtn--hidden");
+        if (players[a + 1].status === "BJ") {
+            standFunc(a + 1);
+        }
+        else {
+            playersBtns[a + 1].classList.remove("playerDivBtn--hidden");
+        }
     }
     else {
         cpuTurn();
     }
+};
+const asFunc = (a) => {
+    const asBtns = document.querySelectorAll('.playerAsBtn');
+    const playersTotal = document.querySelectorAll('.playersTotal');
+    asBtns[a].classList.add('playerAsBtn--hidden');
+    const pTotal = players[a].total - 10;
+    players[a].total = pTotal;
+    playersTotal[a].textContent = pTotal.toString();
 };
 const cpuTurn = () => {
     if (bankP && bankPoint) {
@@ -173,122 +336,10 @@ const verifyGame = () => {
         }
     }
 };
-/**
- * load all game params
- *
- * @param e
- */
-const loadGameParams = (e) => {
-    e.preventDefault();
-    const frRule = document.getElementById("frRule");
-    const usRule = document.getElementById("usRule");
-    players = [];
-    if (playersContainer) {
-        playersContainer.innerHTML = "";
-    }
-    if (paramsPlayers && paramsCards && frRule && usRule) {
-        const p = parseInt(paramsPlayers.value);
-        deckCount = parseInt(paramsCards.value);
-        if (frRule.checked) {
-            rulesFromFr = true;
-        }
-        else if (usRule.checked) {
-            rulesFromFr = false;
-        }
-        for (let i = 0; i < p; i++) {
-            const ply = { name: "player " + (i + 1).toString(), total: 0, money: 15000, status: "pending" };
-            players.push(ply);
-            const playerDiv = document.createElement("div");
-            const playerName = document.createElement('h2');
-            playerName.textContent = ply.name;
-            playerDiv.appendChild(playerName);
-            const playerStatus = document.createElement('h3');
-            playerStatus.className = "playerStatus";
-            playerDiv.appendChild(playerStatus);
-            const playerCardDiv = document.createElement('div');
-            const playerCards = document.createElement('p');
-            playerCardDiv.appendChild(playerCards);
-            playerCards.className = "playersCards";
-            const playerTotal = document.createElement('p');
-            playerTotal.className = "playersTotal";
-            playerDiv.appendChild(playerCardDiv);
-            playerDiv.appendChild(playerTotal);
-            const playerHitBtn = document.createElement("button");
-            playerHitBtn.addEventListener('click', function () {
-                hitFunc(i);
-            });
-            const playerStandBtn = document.createElement("button");
-            playerStandBtn.addEventListener('click', function () {
-                standFunc(i);
-            });
-            playerHitBtn.textContent = "Carte";
-            playerStandBtn.textContent = "Stop";
-            const playerDivBtn = document.createElement('div');
-            playerDivBtn.className = "playerDivBtn playerDivBtn--hidden";
-            playerDivBtn.appendChild(playerHitBtn);
-            playerDivBtn.appendChild(playerStandBtn);
-            playerDiv.appendChild(playerDivBtn);
-            playersContainer?.appendChild(playerDiv);
-        }
-        finalDeck = shuffleDeck();
-    }
-};
-/**
- * distribute cards for all player
- *
- * @param e
-*/
-const distribution = (e) => {
-    initStat();
-    const playersCards = document.querySelectorAll('.playersCards');
-    const playersTotal = document.querySelectorAll('.playersTotal');
-    bankTotal = 0;
-    if (deckCardCount + 1 >= finalDeck.length) {
-        finalDeck = shuffleDeck();
-        deckCardCount = 0;
-    }
-    if (bankP && bankPoint) {
-        bankP.textContent = finalDeck[deckCardCount].name;
-        bankTotal = finalDeck[deckCardCount].value;
-        bankPoint.textContent = (bankTotal).toString();
-        deckCardCount++;
-        if (rulesFromFr === false) {
-            bankSecondCard = finalDeck[deckCardCount];
-            deckCardCount++;
-        }
-    }
-    for (let i = 0; i < players.length; i++) {
-        if (deckCardCount + 1 >= finalDeck.length) {
-            finalDeck = shuffleDeck();
-            deckCardCount = 0;
-        }
-        playersCards[i].textContent = finalDeck[deckCardCount].name;
-        playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
-        players[i].total = finalDeck[deckCardCount].value;
-        deckCardCount++;
-    }
-    for (let i = 0; i < players.length; i++) {
-        if (deckCardCount + 1 >= finalDeck.length) {
-            finalDeck = shuffleDeck();
-            deckCardCount = 0;
-        }
-        playersCards[i].textContent += finalDeck[deckCardCount].name;
-        const t2 = finalDeck[deckCardCount].value + players[i].total;
-        players[i].total = t2;
-        playersTotal[i].textContent = t2.toString();
-        deckCardCount++;
-    }
-    for (let i = 0; i < players.length; i++) {
-        if (players[i].total === 21) {
-            players[i].status = "BJ";
-        }
-    }
-    startGame();
-};
 const startGame = () => {
     const playersBtns = document.querySelectorAll('.playerDivBtn');
     for (let i = 0; i < players.length; i++) {
-        if (players[i].status !== "win") {
+        if (players[i].status !== "BJ") {
             playersBtns[i].classList.remove("playerDivBtn--hidden");
             break;
         }
@@ -296,6 +347,8 @@ const startGame = () => {
 };
 const initStat = () => {
     const playersStatus = document.querySelectorAll('.playerStatus');
+    const playersBtns = document.querySelectorAll('.playerDivBtn');
+    const asBtns = document.querySelectorAll('.playerAsBtn');
     for (let i = 0; i < players.length; i++) {
         if (bankP && bankPoint) {
             bankP.textContent = "";
@@ -305,6 +358,8 @@ const initStat = () => {
         playersStatus[i].textContent = "";
         players[i].total = 0;
         players[i].status = "pending";
+        asBtns[i].classList.add('playerAsBtn--hidden');
+        playersBtns[i].classList.add("playerDivBtn--hidden");
     }
 };
 startGameBtn?.addEventListener('click', loadGameParams);

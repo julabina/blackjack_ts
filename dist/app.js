@@ -13,6 +13,7 @@ let deckCount = 0;
 let rulesFromFr = false;
 let bankSecondCard;
 let finalDeck = [];
+let percentPlayerSixty = 0;
 /**
  * load all game params
  *
@@ -41,6 +42,10 @@ const loadGameParams = (e) => {
             players.push(ply);
             const playerDiv = document.createElement("div");
             playerDiv.className = "bj__players__div";
+            /* const playerMoney = document.createElement('p');
+            playerMoney.textContent = ply.money + " €";
+            playerMoney.className = "playerMoney";
+            playerDiv.appendChild(playerMoney); */
             const playerName = document.createElement('h2');
             playerName.textContent = ply.name;
             playerDiv.appendChild(playerName);
@@ -191,7 +196,7 @@ const distribution = (e) => {
             finalDeck = shuffleDeck();
             deckCardCount = 0;
         }
-        playersCards[i].textContent += finalDeck[deckCardCount].name;
+        playersCards[i].textContent += " " + finalDeck[deckCardCount].name;
         let t1 = 0;
         if (finalDeck[deckCardCount].name === "As") {
             if (players[i].total === 11) {
@@ -224,14 +229,13 @@ const hitFunc = (a) => {
     const playersTotal = document.querySelectorAll('.playersTotal');
     const playersBtns = document.querySelectorAll('.playerDivBtn');
     const asBtns = document.querySelectorAll('.playerAsBtn');
-    const cardText = playersCards[a].textContent + finalDeck[deckCardCount].name;
+    const cardText = playersCards[a].textContent + " " + finalDeck[deckCardCount].name;
     let cardsTotal = players[a].total + finalDeck[deckCardCount].value;
     asBtns[a].classList.add('playerAsBtn--hidden');
     if (deckCardCount + 1 >= finalDeck.length) {
         finalDeck = shuffleDeck();
         deckCardCount = 0;
     }
-    console.log(cardsTotal);
     if (finalDeck[deckCardCount].name === "As") {
         if (cardsTotal > 21) {
             cardsTotal = cardsTotal - 10;
@@ -302,8 +306,79 @@ const cpuTurn = () => {
         bankTotal = total;
         bankPoint.textContent = total.toString();
     }
-    // insert logic
-    verifyGame();
+    if (players.length <= 2) {
+        percentPlayerSixty = 1;
+    }
+    else {
+        percentPlayerSixty = Math.round((players.length / 100) * 66);
+    }
+    cpuAi();
+};
+const cpuAi = () => {
+    let winRate = 0;
+    let win = 0;
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].total === 21) {
+            winRate -= 1;
+        }
+        else if (players[i].total > 21) {
+            winRate += 1;
+            win++;
+        }
+        else {
+            if (bankTotal > players[i].total) {
+                winRate += 1;
+                win++;
+            }
+            else if (bankTotal < players[i].total) {
+                winRate -= 1;
+            }
+            else {
+                winRate += 1;
+            }
+        }
+    }
+    if (bankTotal && bankTotal === 21) {
+        verifyGame();
+    }
+    else if (bankTotal && bankTotal <= 11) {
+        if (bankP && bankPoint) {
+            bankP.textContent += finalDeck[deckCardCount].name;
+            bankTotal = bankTotal + finalDeck[deckCardCount].value;
+            bankPoint.textContent = bankTotal.toString();
+            deckCardCount++;
+        }
+        cpuAi();
+    }
+    else if (bankTotal && bankTotal < 21) {
+        if (winRate < 0) {
+            if (bankP && bankPoint) {
+                bankP.textContent += finalDeck[deckCardCount].name;
+                bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                bankPoint.textContent = bankTotal.toString();
+                deckCardCount++;
+            }
+            cpuAi();
+        }
+        else if (win >= percentPlayerSixty) {
+            verifyGame();
+        }
+        else if (bankTotal && bankTotal <= 14) {
+            if (bankP && bankPoint) {
+                bankP.textContent += finalDeck[deckCardCount].name;
+                bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                bankPoint.textContent = bankTotal.toString();
+                deckCardCount++;
+            }
+            cpuAi();
+        }
+        else {
+            verifyGame();
+        }
+    }
+    else {
+        verifyGame();
+    }
 };
 const verifyGame = () => {
     const playersStatus = document.querySelectorAll('.playerStatus');

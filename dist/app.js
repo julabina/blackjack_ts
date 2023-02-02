@@ -312,7 +312,7 @@ const cpuTurn = () => {
     else {
         percentPlayerSixty = Math.round((players.length / 100) * 66);
     }
-    cpuAi();
+    setTimeout(cpuAi, 1000);
 };
 const cpuAi = () => {
     let winRate = 0;
@@ -348,7 +348,7 @@ const cpuAi = () => {
             bankPoint.textContent = bankTotal.toString();
             deckCardCount++;
         }
-        cpuAi();
+        setTimeout(cpuAi, 1000);
     }
     else if (bankTotal && bankTotal < 21) {
         if (winRate < 0) {
@@ -358,7 +358,7 @@ const cpuAi = () => {
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;
             }
-            cpuAi();
+            setTimeout(cpuAi, 1000);
         }
         else if (win >= percentPlayerSixty) {
             verifyGame();
@@ -370,7 +370,7 @@ const cpuAi = () => {
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;
             }
-            cpuAi();
+            setTimeout(cpuAi, 1000);
         }
         else {
             verifyGame();

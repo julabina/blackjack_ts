@@ -166,6 +166,9 @@ const distribution = (e) => {
     if (bankCard) {
         bankCard.innerHTML = "";
     }
+    for (let i = 0; i < playersCards.length; i++) {
+        playersCards[i].innerHTML = "";
+    }
     bankTotal = 0;
     if (deckCardCount + 1 >= finalDeck.length) {
         finalDeck = shuffleDeck();
@@ -212,12 +215,45 @@ const distribution = (e) => {
             deckCardCount++;
         }
     }
+    // first distribution for all players
     for (let i = 0; i < players.length; i++) {
         if (deckCardCount + 1 >= finalDeck.length) {
             finalDeck = shuffleDeck();
             deckCardCount = 0;
         }
-        playersCards[i].textContent = finalDeck[deckCardCount].name;
+        const cardPlayers = document.createElement("div");
+        cardPlayers.classList.add('bj__player__card__playerCardCont');
+        const cardPlayersTop = document.createElement('div');
+        cardPlayersTop.classList.add('bj__player__card__playerCardCont__top');
+        cardPlayers?.appendChild(cardPlayersTop);
+        const cardPlayersMid = document.createElement('div');
+        cardPlayersMid.classList.add('bj__player__card__playerCardCont__mid');
+        cardPlayers?.appendChild(cardPlayersMid);
+        const cardPlayersImg = document.createElement("img");
+        if (finalDeck[deckCardCount].family === "trefle") {
+            cardPlayersImg.src = "/assets/images/club.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "coeur") {
+            cardPlayersImg.src = "/assets/images/heart.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "carreau") {
+            cardPlayersImg.src = "/assets/images/diamond.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "pique") {
+            cardPlayersImg.src = "/assets/images/spade.svg";
+        }
+        cardPlayersMid?.appendChild(cardPlayersImg);
+        const cardPlayersBottom = document.createElement('div');
+        cardPlayersBottom.classList.add('bj__player__card__playerCardCont__bottom');
+        cardPlayers?.appendChild(cardPlayersBottom);
+        const cardPlayersTopPara = document.createElement('p');
+        cardPlayersTop.appendChild(cardPlayersTopPara);
+        const cardPlayersBottomPara = document.createElement('p');
+        cardPlayersBottom.appendChild(cardPlayersBottomPara);
+        playersCards[i]?.appendChild(cardPlayers);
+        cardPlayersTopPara.textContent = finalDeck[deckCardCount].name;
+        cardPlayersBottomPara.textContent = finalDeck[deckCardCount].name;
+        //playersCards[i].textContent = finalDeck[deckCardCount].name;
         playersTotal[i].textContent = finalDeck[deckCardCount].value.toString();
         if (finalDeck[deckCardCount].name === "As") {
             asBtns[i].classList.remove("playerAsBtn--hidden");
@@ -225,12 +261,45 @@ const distribution = (e) => {
         players[i].total = finalDeck[deckCardCount].value;
         deckCardCount++;
     }
+    // second distribution for all players
     for (let i = 0; i < players.length; i++) {
         if (deckCardCount + 1 >= finalDeck.length) {
             finalDeck = shuffleDeck();
             deckCardCount = 0;
         }
-        playersCards[i].textContent += " " + finalDeck[deckCardCount].name;
+        const cardPlayers = document.createElement("div");
+        cardPlayers.classList.add('bj__player__card__playerCardCont');
+        const cardPlayersTop = document.createElement('div');
+        cardPlayersTop.classList.add('bj__player__card__playerCardCont__top');
+        cardPlayers?.appendChild(cardPlayersTop);
+        const cardPlayersMid = document.createElement('div');
+        cardPlayersMid.classList.add('bj__player__card__playerCardCont__mid');
+        cardPlayers?.appendChild(cardPlayersMid);
+        const cardPlayersImg = document.createElement("img");
+        if (finalDeck[deckCardCount].family === "trefle") {
+            cardPlayersImg.src = "/assets/images/club.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "coeur") {
+            cardPlayersImg.src = "/assets/images/heart.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "carreau") {
+            cardPlayersImg.src = "/assets/images/diamond.svg";
+        }
+        else if (finalDeck[deckCardCount].family === "pique") {
+            cardPlayersImg.src = "/assets/images/spade.svg";
+        }
+        cardPlayersMid?.appendChild(cardPlayersImg);
+        const cardPlayersBottom = document.createElement('div');
+        cardPlayersBottom.classList.add('bj__player__card__playerCardCont__bottom');
+        cardPlayers?.appendChild(cardPlayersBottom);
+        const cardPlayersTopPara = document.createElement('p');
+        cardPlayersTop.appendChild(cardPlayersTopPara);
+        const cardPlayersBottomPara = document.createElement('p');
+        cardPlayersBottom.appendChild(cardPlayersBottomPara);
+        playersCards[i]?.appendChild(cardPlayers);
+        cardPlayersTopPara.textContent = finalDeck[deckCardCount].name;
+        cardPlayersBottomPara.textContent = finalDeck[deckCardCount].name;
+        //playersCards[i].textContent += " " + finalDeck[deckCardCount].name;
         let t1 = 0;
         if (finalDeck[deckCardCount].name === "As") {
             if (players[i].total === 11) {
@@ -263,7 +332,7 @@ const hitFunc = (a) => {
     const playersTotal = document.querySelectorAll('.playersTotal');
     const playersBtns = document.querySelectorAll('.playerDivBtn');
     const asBtns = document.querySelectorAll('.playerAsBtn');
-    const cardText = playersCards[a].textContent + " " + finalDeck[deckCardCount].name;
+    //const cardText: string = playersCards[a].textContent + " " + finalDeck[deckCardCount].name;
     let cardsTotal = players[a].total + finalDeck[deckCardCount].value;
     asBtns[a].classList.add('playerAsBtn--hidden');
     if (deckCardCount + 1 >= finalDeck.length) {
@@ -280,7 +349,39 @@ const hitFunc = (a) => {
     }
     players[a].total = cardsTotal;
     playersTotal[a].textContent = cardsTotal.toString();
-    playersCards[a].textContent = cardText;
+    const cardPlayers = document.createElement("div");
+    cardPlayers.classList.add('bj__player__card__playerCardCont');
+    const cardPlayersTop = document.createElement('div');
+    cardPlayersTop.classList.add('bj__player__card__playerCardCont__top');
+    cardPlayers?.appendChild(cardPlayersTop);
+    const cardPlayersMid = document.createElement('div');
+    cardPlayersMid.classList.add('bj__player__card__playerCardCont__mid');
+    cardPlayers?.appendChild(cardPlayersMid);
+    const cardPlayersImg = document.createElement("img");
+    if (finalDeck[deckCardCount].family === "trefle") {
+        cardPlayersImg.src = "/assets/images/club.svg";
+    }
+    else if (finalDeck[deckCardCount].family === "coeur") {
+        cardPlayersImg.src = "/assets/images/heart.svg";
+    }
+    else if (finalDeck[deckCardCount].family === "carreau") {
+        cardPlayersImg.src = "/assets/images/diamond.svg";
+    }
+    else if (finalDeck[deckCardCount].family === "pique") {
+        cardPlayersImg.src = "/assets/images/spade.svg";
+    }
+    cardPlayersMid?.appendChild(cardPlayersImg);
+    const cardPlayersBottom = document.createElement('div');
+    cardPlayersBottom.classList.add('bj__player__card__playerCardCont__bottom');
+    cardPlayers?.appendChild(cardPlayersBottom);
+    const cardPlayersTopPara = document.createElement('p');
+    cardPlayersTop.appendChild(cardPlayersTopPara);
+    const cardPlayersBottomPara = document.createElement('p');
+    cardPlayersBottom.appendChild(cardPlayersBottomPara);
+    playersCards[a]?.appendChild(cardPlayers);
+    cardPlayersTopPara.textContent = finalDeck[deckCardCount].name;
+    cardPlayersBottomPara.textContent = finalDeck[deckCardCount].name;
+    //playersCards[a].textContent = cardText;
     deckCardCount++;
     if (cardsTotal > 21) {
         playersBtns[a].classList.add("playerDivBtn--hidden");

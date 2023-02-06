@@ -98,3 +98,59 @@ h3 {
     padding-right: 8px;
     font-weight: 600;
 }
+
+.playersCards {
+    display: grid;
+}
+
+.bj__player__card {
+    display: flex;
+}
+
+.bj__player__card__playerCardCont {
+    height : 90px;
+    width: 60px;
+    border-radius: 7px;
+    background-color: white;
+    border: 1px solid black;
+    margin: 5px;
+}
+
+.bj__player__card__playerCardCont__top {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 20%;
+}
+
+.bj__player__card__playerCardCont__top p {
+    margin: 0;
+    padding-left: 4px;
+    font-weight: 600;
+    font-size: 0.6em;
+}
+
+.bj__player__card__playerCardCont__mid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+}
+
+.bj__player__card__playerCardCont__mid img {
+    height: 60%;
+}
+
+.bj__player__card__playerCardCont__bottom {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 20%;
+}
+
+.bj__player__card__playerCardCont__bottom p {
+    margin: 0;
+    padding-right: 4px;
+    font-weight: 600;
+    font-size: 0.6em;
+}

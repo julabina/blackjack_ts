@@ -48,3 +48,53 @@ h3 {
     padding: 10px;
     width: 160px;
 }
+
+.bj__cpu__card {
+    display: flex;
+}
+
+.bj__cpu__card__cpuCardCont {
+    height : 150px;
+    width: 100px;
+    border-radius: 7px;
+    background-color: white;
+    border: 1px solid black;
+    margin: 5px;
+}
+
+.bj__cpu__card__cpuCardCont__top {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 20%;
+}
+
+.bj__cpu__card__cpuCardCont__top p {
+    margin: 0;
+    padding-left: 8px;
+    font-weight: 600;
+}
+
+.bj__cpu__card__cpuCardCont__mid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+}
+
+.bj__cpu__card__cpuCardCont__mid img {
+    height: 60%;
+}
+
+.bj__cpu__card__cpuCardCont__bottom {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 20%;
+}
+
+.bj__cpu__card__cpuCardCont__bottom p {
+    margin: 0;
+    padding-right: 8px;
+    font-weight: 600;
+}

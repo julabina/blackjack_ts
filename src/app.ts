@@ -62,7 +62,7 @@ const loadGameParams = (e: Event) => {
             playerStatus.className = "playerStatus";
             playerDiv.appendChild(playerStatus);
             const playerCardDiv = document.createElement('div');
-            const playerCards = document.createElement('p');
+            const playerCards = document.createElement('div');
             playerCardDiv.appendChild(playerCards);
             playerCards.className = "playersCards";
             const playerTotal = document.createElement('p');
@@ -119,9 +119,9 @@ const createDeck = (fam: string): Card[] => {
         {name: "8", value: 8, family: fam}, 
         {name: "9", value: 9, family: fam}, 
         {name: "10", value: 10, family: fam}, 
-        {name: "Valet", value: 10, family: fam}, 
-        {name: "Reine", value: 10, family: fam},
-        {name: "Roi", value: 10, family: fam}
+        {name: "J", value: 10, family: fam}, 
+        {name: "Q", value: 10, family: fam},
+        {name: "K", value: 10, family: fam}
     ]; 
     
     return deck;
@@ -188,6 +188,9 @@ const distribution = (e: Event) => {
     const playersTotal = document.querySelectorAll('.playersTotal');
     const asBtns = document.querySelectorAll('.playerAsBtn');   
     
+    if (bankCard) {   
+        bankCard.innerHTML = "";
+    }
     bankTotal = 0;
 
     if (deckCardCount + 1 >= finalDeck.length) {
@@ -195,8 +198,36 @@ const distribution = (e: Event) => {
         deckCardCount = 0;
     }
 
-    if (bankP && bankPoint) {
-        bankP.textContent = finalDeck[deckCardCount].name;
+    if (bankPoint) {
+        const cardCpu1 = document.createElement("div");
+        cardCpu1.classList.add('bj__cpu__card__cpuCardCont');
+        const cardCpu1Top = document.createElement('div');
+        cardCpu1Top.classList.add('bj__cpu__card__cpuCardCont__top');
+        cardCpu1?.appendChild(cardCpu1Top);
+        const cardCpu1Mid = document.createElement('div');
+        cardCpu1Mid.classList.add('bj__cpu__card__cpuCardCont__mid');
+        cardCpu1?.appendChild(cardCpu1Mid);
+        const cardCpu1Img = document.createElement("img");
+        if (finalDeck[deckCardCount].family === "trefle") {
+            cardCpu1Img.src = "/assets/images/club.svg"; 
+        } else if (finalDeck[deckCardCount].family === "coeur") {
+            cardCpu1Img.src = "/assets/images/heart.svg";
+        } else if (finalDeck[deckCardCount].family === "carreau") {
+            cardCpu1Img.src = "/assets/images/diamond.svg";
+        } else if (finalDeck[deckCardCount].family === "pique") {
+            cardCpu1Img.src = "/assets/images/spade.svg";
+        }
+        cardCpu1Mid?.appendChild(cardCpu1Img);
+        const cardCpu1Bottom = document.createElement('div');
+        cardCpu1Bottom.classList.add('bj__cpu__card__cpuCardCont__bottom');
+        cardCpu1?.appendChild(cardCpu1Bottom);
+        const cardCpu1TopPara = document.createElement('p');
+        cardCpu1Top.appendChild(cardCpu1TopPara);
+        const cardCpu1BottomPara = document.createElement('p');
+        cardCpu1Bottom.appendChild(cardCpu1BottomPara);
+        bankCard?.appendChild(cardCpu1);
+        cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
+        cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
         bankTotal = finalDeck[deckCardCount].value;
         bankPoint.textContent = (bankTotal).toString(); 
         deckCardCount++;
@@ -343,12 +374,41 @@ const asFunc = (a: number) => {
 };
 
 const cpuTurn = () => {    
-    if (bankP && bankPoint) {   
+    if (bankPoint) {   
         if (rulesFromFr === true) {
             bankSecondCard = finalDeck[deckCardCount];
             deckCardCount++;
         }
-        bankP.textContent += bankSecondCard.name;
+        const cardCpu1 = document.createElement("div");
+        cardCpu1.classList.add('bj__cpu__card__cpuCardCont');
+        const cardCpu1Top = document.createElement('div');
+        cardCpu1Top.classList.add('bj__cpu__card__cpuCardCont__top');
+        cardCpu1?.appendChild(cardCpu1Top);
+        const cardCpu1Mid = document.createElement('div');
+        cardCpu1Mid.classList.add('bj__cpu__card__cpuCardCont__mid');
+        cardCpu1?.appendChild(cardCpu1Mid);
+        const cardCpu1Img = document.createElement("img");
+        if (bankSecondCard.family === "trefle") {
+            cardCpu1Img.src = "/assets/images/club.svg"; 
+        } else if (bankSecondCard.family === "coeur") {
+            cardCpu1Img.src = "/assets/images/heart.svg";
+        } else if (bankSecondCard.family === "carreau") {
+            cardCpu1Img.src = "/assets/images/diamond.svg";
+        } else if (bankSecondCard.family === "pique") {
+            cardCpu1Img.src = "/assets/images/spade.svg";
+        }
+        cardCpu1Mid?.appendChild(cardCpu1Img);
+        const cardCpu1Bottom = document.createElement('div');
+        cardCpu1Bottom.classList.add('bj__cpu__card__cpuCardCont__bottom');
+        cardCpu1?.appendChild(cardCpu1Bottom);
+        const cardCpu1TopPara = document.createElement('p');
+        cardCpu1Top.appendChild(cardCpu1TopPara);
+        const cardCpu1BottomPara = document.createElement('p');
+        cardCpu1Bottom.appendChild(cardCpu1BottomPara);
+        bankCard?.appendChild(cardCpu1);
+        cardCpu1TopPara.textContent = bankSecondCard.name;
+        cardCpu1BottomPara.textContent = bankSecondCard.name;
+
         const total = bankTotal + bankSecondCard.value;
         bankTotal = total;
         bankPoint.textContent = total.toString();
@@ -388,8 +448,38 @@ const cpuAi = () => {
     if (bankTotal && bankTotal === 21) {
         verifyGame()
     } else if (bankTotal && bankTotal <= 11) {
-        if (bankP && bankPoint) {   
-            bankP.textContent += finalDeck[deckCardCount].name;
+        if (bankPoint) {  
+            
+            const cardCpu1 = document.createElement("div");
+            cardCpu1.classList.add('bj__cpu__card__cpuCardCont');
+            const cardCpu1Top = document.createElement('div');
+            cardCpu1Top.classList.add('bj__cpu__card__cpuCardCont__top');
+            cardCpu1?.appendChild(cardCpu1Top);
+            const cardCpu1Mid = document.createElement('div');
+            cardCpu1Mid.classList.add('bj__cpu__card__cpuCardCont__mid');
+            cardCpu1?.appendChild(cardCpu1Mid);
+            const cardCpu1Img = document.createElement("img");
+            if (finalDeck[deckCardCount].family === "trefle") {
+                cardCpu1Img.src = "/assets/images/club.svg"; 
+            } else if (finalDeck[deckCardCount].family === "coeur") {
+                cardCpu1Img.src = "/assets/images/heart.svg";
+            } else if (finalDeck[deckCardCount].family === "carreau") {
+                cardCpu1Img.src = "/assets/images/diamond.svg";
+            } else if (finalDeck[deckCardCount].family === "pique") {
+                cardCpu1Img.src = "/assets/images/spade.svg";
+            }
+            cardCpu1Mid?.appendChild(cardCpu1Img);
+            const cardCpu1Bottom = document.createElement('div');
+            cardCpu1Bottom.classList.add('bj__cpu__card__cpuCardCont__bottom');
+            cardCpu1?.appendChild(cardCpu1Bottom);
+            const cardCpu1TopPara = document.createElement('p');
+            cardCpu1Top.appendChild(cardCpu1TopPara);
+            const cardCpu1BottomPara = document.createElement('p');
+            cardCpu1Bottom.appendChild(cardCpu1BottomPara);
+            bankCard?.appendChild(cardCpu1);
+            cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
+            cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
+
             bankTotal = bankTotal + finalDeck[deckCardCount].value;
             bankPoint.textContent = bankTotal.toString();
             deckCardCount++;
@@ -398,8 +488,37 @@ const cpuAi = () => {
         setTimeout(cpuAi, 1000);
     } else if (bankTotal && bankTotal < 21) {
         if (winRate < 0) {
-            if (bankP && bankPoint) {   
-                bankP.textContent += finalDeck[deckCardCount].name;
+            if (bankPoint) { 
+                const cardCpu1 = document.createElement("div");
+                cardCpu1.classList.add('bj__cpu__card__cpuCardCont');
+                const cardCpu1Top = document.createElement('div');
+                cardCpu1Top.classList.add('bj__cpu__card__cpuCardCont__top');
+                cardCpu1?.appendChild(cardCpu1Top);
+                const cardCpu1Mid = document.createElement('div');
+                cardCpu1Mid.classList.add('bj__cpu__card__cpuCardCont__mid');
+                cardCpu1?.appendChild(cardCpu1Mid);
+                const cardCpu1Img = document.createElement("img");
+                if (finalDeck[deckCardCount].family === "trefle") {
+                    cardCpu1Img.src = "/assets/images/club.svg"; 
+                } else if (finalDeck[deckCardCount].family === "coeur") {
+                    cardCpu1Img.src = "/assets/images/heart.svg";
+                } else if (finalDeck[deckCardCount].family === "carreau") {
+                    cardCpu1Img.src = "/assets/images/diamond.svg";
+                } else if (finalDeck[deckCardCount].family === "pique") {
+                    cardCpu1Img.src = "/assets/images/spade.svg";
+                }
+                cardCpu1Mid?.appendChild(cardCpu1Img);
+                const cardCpu1Bottom = document.createElement('div');
+                cardCpu1Bottom.classList.add('bj__cpu__card__cpuCardCont__bottom');
+                cardCpu1?.appendChild(cardCpu1Bottom);
+                const cardCpu1TopPara = document.createElement('p');
+                cardCpu1Top.appendChild(cardCpu1TopPara);
+                const cardCpu1BottomPara = document.createElement('p');
+                cardCpu1Bottom.appendChild(cardCpu1BottomPara);
+                bankCard?.appendChild(cardCpu1);
+                cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
+                cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
+                
                 bankTotal = bankTotal + finalDeck[deckCardCount].value;
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;
@@ -409,8 +528,37 @@ const cpuAi = () => {
         } else if (win >= percentPlayerSixty) {
             verifyGame()
         } else if (bankTotal && bankTotal <= 14) {
-            if (bankP && bankPoint) {   
-                bankP.textContent += finalDeck[deckCardCount].name;
+            if (bankPoint) { 
+                const cardCpu1 = document.createElement("div");
+                cardCpu1.classList.add('bj__cpu__card__cpuCardCont');
+                const cardCpu1Top = document.createElement('div');
+                cardCpu1Top.classList.add('bj__cpu__card__cpuCardCont__top');
+                cardCpu1?.appendChild(cardCpu1Top);
+                const cardCpu1Mid = document.createElement('div');
+                cardCpu1Mid.classList.add('bj__cpu__card__cpuCardCont__mid');
+                cardCpu1?.appendChild(cardCpu1Mid);
+                const cardCpu1Img = document.createElement("img");
+                if (finalDeck[deckCardCount].family === "trefle") {
+                    cardCpu1Img.src = "/assets/images/club.svg"; 
+                } else if (finalDeck[deckCardCount].family === "coeur") {
+                    cardCpu1Img.src = "/assets/images/heart.svg";
+                } else if (finalDeck[deckCardCount].family === "carreau") {
+                    cardCpu1Img.src = "/assets/images/diamond.svg";
+                } else if (finalDeck[deckCardCount].family === "pique") {
+                    cardCpu1Img.src = "/assets/images/spade.svg";
+                }
+                cardCpu1Mid?.appendChild(cardCpu1Img);
+                const cardCpu1Bottom = document.createElement('div');
+                cardCpu1Bottom.classList.add('bj__cpu__card__cpuCardCont__bottom');
+                cardCpu1?.appendChild(cardCpu1Bottom);
+                const cardCpu1TopPara = document.createElement('p');
+                cardCpu1Top.appendChild(cardCpu1TopPara);
+                const cardCpu1BottomPara = document.createElement('p');
+                cardCpu1Bottom.appendChild(cardCpu1BottomPara);
+                bankCard?.appendChild(cardCpu1);
+                cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
+                cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
+                
                 bankTotal = bankTotal + finalDeck[deckCardCount].value;
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;

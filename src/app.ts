@@ -51,10 +51,10 @@ const loadGameParams = (e: Event) => {
 
             const playerDiv = document.createElement("div");
             playerDiv.className = "bj__players__div"
-            /* const playerMoney = document.createElement('p');
+            const playerMoney = document.createElement('p');
             playerMoney.textContent = ply.money + " €";
             playerMoney.className = "playerMoney";
-            playerDiv.appendChild(playerMoney); */
+            playerDiv.appendChild(playerMoney);
             const playerName = document.createElement('h2');
             playerName.textContent = ply.name;
             playerDiv.appendChild(playerName);
@@ -722,12 +722,18 @@ const verifyGame = () => {
 const startGame = () => {
 
     const playersBtns = document.querySelectorAll('.playerDivBtn');
+    let bjCount: number = 0;
 
     for (let i = 0; i < players.length; i++) {
         if (players[i].status !== "BJ") {
             playersBtns[i].classList.remove("playerDivBtn--hidden");
             break;
         }
+        bjCount++
+    }
+    
+    if (bjCount === players.length) {
+        cpuTurn();
     }
 
 };

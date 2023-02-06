@@ -99,6 +99,11 @@ h3 {
     font-weight: 600;
 }
 
+.playerMoney {
+    text-align: center;
+    font-size: 0.85em;
+}
+
 .playersCards {
     display: grid;
 }

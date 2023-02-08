@@ -1,6 +1,8 @@
 "use strict";
 const bankCard = document.querySelector('.bj__cpu__card');
 const bankPoint = document.querySelector('.bj__cpu__point');
+const menuBtn = document.querySelector('.paramsBtn');
+const paramSection = document.querySelector('.params');
 const playBtn = document.querySelector('.playBtn');
 const bankP = bankCard?.querySelector('p');
 const startGameBtn = document.getElementById('startGame');
@@ -86,6 +88,7 @@ const loadGameParams = (e) => {
         }
         finalDeck = shuffleDeck();
     }
+    paramSection?.classList.add('params--hidden');
 };
 /**
  * create one family deck
@@ -705,5 +708,14 @@ const initStat = () => {
         playersBtns[i].classList.add("playerDivBtn--hidden");
     }
 };
+const toggleMenu = () => {
+    if (paramSection?.classList.contains('params--hidden')) {
+        paramSection.classList.remove('params--hidden');
+    }
+    else {
+        paramSection?.classList.add('params--hidden');
+    }
+};
 startGameBtn?.addEventListener('click', loadGameParams);
 playBtn?.addEventListener('click', distribution);
+menuBtn?.addEventListener('click', toggleMenu);

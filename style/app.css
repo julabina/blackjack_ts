@@ -1,8 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+html, body {
+    margin:0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    background-image: url('../assets/images/sol.jpeg');
+    min-height : 100%;
 }
 
 h2 {
@@ -11,6 +21,36 @@ h2 {
 
 h3 {
     height: 23px;
+}
+
+.paramsBtn {
+    min-width: 305px;
+    height: 18px;
+    padding: 0;
+    line-height: 0;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius:2px 2px 0 0;
+}
+
+.paramsBtn:hover {
+    cursor: pointer;
+}
+
+.params {
+    background-color: white;
+    margin: 0 0 5px
+}
+
+.params--hidden {
+    display: none;
+}
+
+.players {
+    border: 5px solid #333;
+    padding: 50px 150px;
+    border-radius: 250px;
+    background-color: #02764F;
 }
 
 .playerDivBtn {
@@ -35,6 +75,26 @@ h3 {
 .params__form {
     padding: 15px;
     border: 1px solid black;
+    border-top: none;
+    border-radius: 2px
+}
+
+.params__form__radio {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.params__form__radio div {
+    display: flex;
+    margin-right: 15px;
+}
+
+.params__form__radio label {
+    margin-top: 4px;
+}
+
+.params__form__select select {
+    padding: 5px;
 }
 
 .bj__players {
@@ -44,9 +104,28 @@ h3 {
 
 .bj__players__div {
     margin: 15px;
-    border: 1px solid black;
+    border: thick double black;
+    border-radius: 14px;
     padding: 10px;
     width: 160px;
+}
+
+.bj__cpu__pointCont {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.bj__cpu__point {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    height: 25px;
+    width:60px;
+    border : 2px solid #444;
+    border-radius: 30px;
+    font-weight: 500;
 }
 
 .bj__cpu__card {
@@ -59,7 +138,7 @@ h3 {
     border-radius: 7px;
     background-color: white;
     border: 1px solid black;
-    margin: 5px;
+    margin: 10px 5px 5px;
 }
 
 .bj__cpu__card__cpuCardCont__top {
@@ -102,14 +181,25 @@ h3 {
 .playerMoney {
     text-align: center;
     font-size: 0.85em;
+    color: white;
 }
 
 .playersCards {
-    display: grid;
+    display: flex;
+}
+
+.playersTotal {
+    text-align: center;
+    font-weight: 600;
+    color: white;
 }
 
 .bj__player__card {
     display: flex;
+}
+
+.bj__player__card__playerCardCont:first-child {
+    margin: 5px;
 }
 
 .bj__player__card__playerCardCont {
@@ -118,7 +208,7 @@ h3 {
     border-radius: 7px;
     background-color: white;
     border: 1px solid black;
-    margin: 5px;
+    margin: 5px 5px 5px -40px;
 }
 
 .bj__player__card__playerCardCont__top {
@@ -158,4 +248,14 @@ h3 {
     padding-right: 4px;
     font-weight: 600;
     font-size: 0.6em;
+}
+
+#startGame {
+    margin-top: 15px;
+    height: 40px;
+    width: 100%;
+}
+
+#startGame:hover {
+    cursor: pointer;
 }

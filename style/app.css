@@ -5,13 +5,14 @@ html, body {
     padding: 0;
     height: 100%;
     font-family: 'Roboto', sans-serif;
+    background-image: url('../assets/images/sol.jpeg');
+    background-size: 8%;
 }
 
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url('../assets/images/sol.jpeg');
     min-height : 100%;
 }
 

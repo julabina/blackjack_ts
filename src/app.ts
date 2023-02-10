@@ -32,8 +32,10 @@ const loadGameParams = (e: Event) => {
 
     playBtn?.classList.remove("playBtn--hidden");
 
-    if (playersContainer) {   
+    if (playersContainer && bankCard && bankPoint) {   
         playersContainer.innerHTML = "";  
+        bankPoint.innerHTML = "";  
+        bankCard.innerHTML = "";  
     }
 
     if (paramsPlayers && paramsCards && frRule && usRule) {
@@ -102,6 +104,8 @@ const loadGameParams = (e: Event) => {
     }
 
     paramSection?.classList.add('params--hidden');
+
+    distribution();
 
 };
 
@@ -185,7 +189,7 @@ let deckCardCount: number = 0;
  * 
  * @param e 
 */
-const distribution = (e: Event) => {
+const distribution = () => {
     initStat();
 
     const playersCards = document.querySelectorAll('.playersCards');

@@ -27,8 +27,10 @@ const loadGameParams = (e) => {
     const usRule = document.getElementById("usRule");
     players = [];
     playBtn?.classList.remove("playBtn--hidden");
-    if (playersContainer) {
+    if (playersContainer && bankCard && bankPoint) {
         playersContainer.innerHTML = "";
+        bankPoint.innerHTML = "";
+        bankCard.innerHTML = "";
     }
     if (paramsPlayers && paramsCards && frRule && usRule) {
         const p = parseInt(paramsPlayers.value);
@@ -89,6 +91,7 @@ const loadGameParams = (e) => {
         finalDeck = shuffleDeck();
     }
     paramSection?.classList.add('params--hidden');
+    distribution();
 };
 /**
  * create one family deck
@@ -161,7 +164,7 @@ let deckCardCount = 0;
  *
  * @param e
 */
-const distribution = (e) => {
+const distribution = () => {
     initStat();
     const playersCards = document.querySelectorAll('.playersCards');
     const playersTotal = document.querySelectorAll('.playersTotal');

@@ -185,6 +185,23 @@ h3 {
     color: white;
 }
 
+.playerDivBtn button {
+    height: 35px;
+    min-width: 33%;
+    border: 3px solid white;
+    border-radius: 25px;
+    transition: all 150ms ease-in-out ;
+    background-color: #02764F;
+    color: white;
+}
+
+.playerDivBtn button:hover {
+    cursor: pointer;
+    transition: all 150ms ease-in-out ;
+    background-color: white;
+    color: #02764F;
+}
+
 .playersCards {
     display: flex;
 }

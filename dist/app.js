@@ -474,7 +474,18 @@ const cpuTurn = () => {
         bankCard?.appendChild(cardCpu1);
         cardCpu1TopPara.textContent = bankSecondCard.name;
         cardCpu1BottomPara.textContent = bankSecondCard.name;
-        const total = bankTotal + bankSecondCard.value;
+        let total = 0;
+        if (bankSecondCard.name === "As") {
+            if (bankTotal === 11) {
+                bankTotal = 12;
+            }
+            else {
+                total = bankTotal + bankSecondCard.value;
+            }
+        }
+        else {
+            total = bankTotal + bankSecondCard.value;
+        }
         bankTotal = total;
         bankPoint.textContent = total.toString();
     }
@@ -547,7 +558,17 @@ const cpuAi = () => {
             bankCard?.appendChild(cardCpu1);
             cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
             cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
-            bankTotal = bankTotal + finalDeck[deckCardCount].value;
+            if (finalDeck[deckCardCount].name === "As") {
+                if (bankTotal + 11 > 21) {
+                    bankTotal++;
+                }
+                else {
+                    bankTotal = bankTotal + 11;
+                }
+            }
+            else {
+                bankTotal = bankTotal + finalDeck[deckCardCount].value;
+            }
             bankPoint.textContent = bankTotal.toString();
             deckCardCount++;
         }
@@ -588,7 +609,17 @@ const cpuAi = () => {
                 bankCard?.appendChild(cardCpu1);
                 cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
                 cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
-                bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                if (finalDeck[deckCardCount].name === "As") {
+                    if (bankTotal + 11 > 21) {
+                        bankTotal++;
+                    }
+                    else {
+                        bankTotal = bankTotal + 11;
+                    }
+                }
+                else {
+                    bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                }
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;
             }
@@ -631,7 +662,17 @@ const cpuAi = () => {
                 bankCard?.appendChild(cardCpu1);
                 cardCpu1TopPara.textContent = finalDeck[deckCardCount].name;
                 cardCpu1BottomPara.textContent = finalDeck[deckCardCount].name;
-                bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                if (finalDeck[deckCardCount].name === "As") {
+                    if (bankTotal + 11 > 21) {
+                        bankTotal++;
+                    }
+                    else {
+                        bankTotal = bankTotal + 11;
+                    }
+                }
+                else {
+                    bankTotal = bankTotal + finalDeck[deckCardCount].value;
+                }
                 bankPoint.textContent = bankTotal.toString();
                 deckCardCount++;
             }

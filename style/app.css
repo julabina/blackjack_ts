@@ -54,6 +54,11 @@ h3 {
     background-color: #02764F;
 }
 
+.playerStatus {
+    text-align: center;
+    color: white;
+}
+
 .playerDivBtn {
     display: flex;
     justify-content: center;

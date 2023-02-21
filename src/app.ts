@@ -536,7 +536,7 @@ const cpuTurn = () => {
         if (bankSecondCard.name === "As") {
             
             if (bankTotal === 11) {
-                bankTotal = 12;
+                total = 12;
             } else {
                 total = bankTotal + bankSecondCard.value;
             }

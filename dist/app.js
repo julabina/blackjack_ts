@@ -191,16 +191,16 @@ const distribution = () => {
         cardCpu1?.appendChild(cardCpu1Mid);
         const cardCpu1Img = document.createElement("img");
         if (finalDeck[deckCardCount].family === "trefle") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/club.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/club.svg";
         }
         else if (finalDeck[deckCardCount].family === "coeur") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/heart.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/heart.svg";
         }
         else if (finalDeck[deckCardCount].family === "carreau") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/diamond.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/diamond.svg";
         }
         else if (finalDeck[deckCardCount].family === "pique") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/spade.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/spade.svg";
         }
         cardCpu1Mid?.appendChild(cardCpu1Img);
         const cardCpu1Bottom = document.createElement('div');
@@ -237,16 +237,16 @@ const distribution = () => {
         cardPlayers?.appendChild(cardPlayersMid);
         const cardPlayersImg = document.createElement("img");
         if (finalDeck[deckCardCount].family === "trefle") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/club.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/club.svg";
         }
         else if (finalDeck[deckCardCount].family === "coeur") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/heart.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/heart.svg";
         }
         else if (finalDeck[deckCardCount].family === "carreau") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/diamond.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/diamond.svg";
         }
         else if (finalDeck[deckCardCount].family === "pique") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/spade.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/spade.svg";
         }
         cardPlayersMid?.appendChild(cardPlayersImg);
         const cardPlayersBottom = document.createElement('div');
@@ -283,16 +283,16 @@ const distribution = () => {
         cardPlayers?.appendChild(cardPlayersMid);
         const cardPlayersImg = document.createElement("img");
         if (finalDeck[deckCardCount].family === "trefle") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/club.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/club.svg";
         }
         else if (finalDeck[deckCardCount].family === "coeur") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/heart.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/heart.svg";
         }
         else if (finalDeck[deckCardCount].family === "carreau") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/diamond.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/diamond.svg";
         }
         else if (finalDeck[deckCardCount].family === "pique") {
-            cardPlayersImg.src = "./blackjack_ts/assets/images/spade.svg";
+            cardPlayersImg.src = "/blackjack_ts/assets/images/spade.svg";
         }
         cardPlayersMid?.appendChild(cardPlayersImg);
         const cardPlayersBottom = document.createElement('div');
@@ -365,16 +365,16 @@ const hitFunc = (a) => {
     cardPlayers?.appendChild(cardPlayersMid);
     const cardPlayersImg = document.createElement("img");
     if (finalDeck[deckCardCount].family === "trefle") {
-        cardPlayersImg.src = "./blackjack_ts/assets/images/club.svg";
+        cardPlayersImg.src = "/blackjack_ts/assets/images/club.svg";
     }
     else if (finalDeck[deckCardCount].family === "coeur") {
-        cardPlayersImg.src = "./blackjack_ts/assets/images/heart.svg";
+        cardPlayersImg.src = "/blackjack_ts/assets/images/heart.svg";
     }
     else if (finalDeck[deckCardCount].family === "carreau") {
-        cardPlayersImg.src = "./blackjack_ts/assets/images/diamond.svg";
+        cardPlayersImg.src = "/blackjack_ts/assets/images/diamond.svg";
     }
     else if (finalDeck[deckCardCount].family === "pique") {
-        cardPlayersImg.src = "./blackjack_ts/assets/images/spade.svg";
+        cardPlayersImg.src = "/blackjack_ts/assets/images/spade.svg";
     }
     cardPlayersMid?.appendChild(cardPlayersImg);
     const cardPlayersBottom = document.createElement('div');
@@ -452,16 +452,16 @@ const cpuTurn = () => {
         cardCpu1?.appendChild(cardCpu1Mid);
         const cardCpu1Img = document.createElement("img");
         if (bankSecondCard.family === "trefle") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/club.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/club.svg";
         }
         else if (bankSecondCard.family === "coeur") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/heart.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/heart.svg";
         }
         else if (bankSecondCard.family === "carreau") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/diamond.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/diamond.svg";
         }
         else if (bankSecondCard.family === "pique") {
-            cardCpu1Img.src = "./blackjack_ts/assets/images/spade.svg";
+            cardCpu1Img.src = "/blackjack_ts/assets/images/spade.svg";
         }
         cardCpu1Mid?.appendChild(cardCpu1Img);
         const cardCpu1Bottom = document.createElement('div');
@@ -536,16 +536,16 @@ const cpuAi = () => {
             cardCpu1?.appendChild(cardCpu1Mid);
             const cardCpu1Img = document.createElement("img");
             if (finalDeck[deckCardCount].family === "trefle") {
-                cardCpu1Img.src = "./blackjack_ts/assets/images/club.svg";
+                cardCpu1Img.src = "/blackjack_ts/assets/images/club.svg";
             }
             else if (finalDeck[deckCardCount].family === "coeur") {
-                cardCpu1Img.src = "./blackjack_ts/assets/images/heart.svg";
+                cardCpu1Img.src = "/blackjack_ts/assets/images/heart.svg";
             }
             else if (finalDeck[deckCardCount].family === "carreau") {
-                cardCpu1Img.src = "./blackjack_ts/assets/images/diamond.svg";
+                cardCpu1Img.src = "/blackjack_ts/assets/images/diamond.svg";
             }
             else if (finalDeck[deckCardCount].family === "pique") {
-                cardCpu1Img.src = "./blackjack_ts/assets/images/spade.svg";
+                cardCpu1Img.src = "/blackjack_ts/assets/images/spade.svg";
             }
             cardCpu1Mid?.appendChild(cardCpu1Img);
             const cardCpu1Bottom = document.createElement('div');
@@ -587,16 +587,16 @@ const cpuAi = () => {
                 cardCpu1?.appendChild(cardCpu1Mid);
                 const cardCpu1Img = document.createElement("img");
                 if (finalDeck[deckCardCount].family === "trefle") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/club.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/club.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "coeur") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/heart.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/heart.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "carreau") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/diamond.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/diamond.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "pique") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/spade.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/spade.svg";
                 }
                 cardCpu1Mid?.appendChild(cardCpu1Img);
                 const cardCpu1Bottom = document.createElement('div');
@@ -640,16 +640,16 @@ const cpuAi = () => {
                 cardCpu1?.appendChild(cardCpu1Mid);
                 const cardCpu1Img = document.createElement("img");
                 if (finalDeck[deckCardCount].family === "trefle") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/club.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/club.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "coeur") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/heart.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/heart.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "carreau") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/diamond.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/diamond.svg";
                 }
                 else if (finalDeck[deckCardCount].family === "pique") {
-                    cardCpu1Img.src = "./blackjack_ts/assets/images/spade.svg";
+                    cardCpu1Img.src = "/blackjack_ts/assets/images/spade.svg";
                 }
                 cardCpu1Mid?.appendChild(cardCpu1Img);
                 const cardCpu1Bottom = document.createElement('div');
